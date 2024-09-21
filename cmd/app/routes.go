@@ -7,7 +7,8 @@ import (
 func newMux() http.Handler {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/hello", getUrlByShortName)
+	mux.HandleFunc("/go/{shortKey}", handleShortKey)
+	mux.HandleFunc("/set/{shortKey}", handleSetShortKey)
 
 	wrappedMux := wrapMiddlewares(
 		mux,
