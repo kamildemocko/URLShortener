@@ -9,12 +9,16 @@ import (
 
 const webPort = 80
 
+type Config struct {
+	Mux http.Handler
+}
+
 func main() {
-	mux := newMux()
+	app := Config{}
 
 	srv := http.Server{
 		Addr:         fmt.Sprintf(":%d", webPort),
-		Handler:      mux,
+		Handler:      app.routes(),
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  30 * time.Second,
@@ -24,5 +28,4 @@ func main() {
 	if err := srv.ListenAndServe(); err != nil {
 		log.Fatalf("could not start server: %v\n", err)
 	}
-
 }
