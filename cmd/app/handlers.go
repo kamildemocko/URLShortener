@@ -10,12 +10,13 @@ import (
 
 func (app *Config) handleRedirectWithKey(w http.ResponseWriter, r *http.Request) {
 	key := chi.URLParam(r, "key")
-	fmt.Println(key)
 
-	// get url from db
-	url := "https://google.com"
+	url, err := app.repository.GetUrlByKey(key)
+	if err != nil {
+		_ = app.NotFoundJSON(w, fmt.Errorf("cannot find url by key: %s", key))
+		return
+	}
 
-	// redirect to url
 	http.Redirect(w, r, url, http.StatusFound)
 }
 
@@ -24,6 +25,7 @@ func (app *Config) handleSetShortKey(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&inputRequest)
 	if err != nil {
-		app.ErrorJSON(w, fmt.Errorf("cannot parse request body json"))
+		_ = app.ErrorJSON(w, fmt.Errorf("cannot parse request body json"))
+		return
 	}
 }

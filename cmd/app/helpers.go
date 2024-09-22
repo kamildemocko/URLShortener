@@ -25,8 +25,8 @@ func (app *Config) WriteJSON(w http.ResponseWriter, status int, msg, detail stri
 		return err
 	}
 
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
+	w.Header().Set("Content-Type", "application/json")
 
 	_, err = w.Write(payload)
 	if err != nil {
@@ -38,6 +38,12 @@ func (app *Config) WriteJSON(w http.ResponseWriter, status int, msg, detail stri
 
 func (app *Config) ErrorJSON(w http.ResponseWriter, err error) error {
 	statusCode := http.StatusBadRequest
+
+	return app.WriteJSON(w, statusCode, "error", err.Error(), nil)
+}
+
+func (app *Config) NotFoundJSON(w http.ResponseWriter, err error) error {
+	statusCode := http.StatusNotFound
 
 	return app.WriteJSON(w, statusCode, "error", err.Error(), nil)
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"URLShortener/data"
 	"fmt"
 	"log"
 	"net/http"
@@ -14,6 +15,7 @@ type Config struct {
 	webPort    int
 	pathPrefix string
 	dsn        string
+	repository data.Repository
 }
 
 func init() {
@@ -28,6 +30,12 @@ func main() {
 		pathPrefix: "/short",
 		dsn:        os.Getenv("DSN"),
 	}
+
+	repo, err := initPostgresDB(app.dsn)
+	if err != nil {
+		panic(err)
+	}
+	app.repository = repo
 
 	srv := http.Server{
 		Addr:         fmt.Sprintf(":%d", app.webPort),
