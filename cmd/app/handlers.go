@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
+
+	"github.com/go-chi/chi/v5"
 )
 
-func (app *Config) handleShortKey(w http.ResponseWriter, r *http.Request) {
-	key := strings.TrimPrefix(r.URL.Path, "/go/")
+func (app *Config) handleRedirectWithKey(w http.ResponseWriter, r *http.Request) {
+	key := chi.URLParam(r, "key")
 	fmt.Println(key)
 
 	// get url from db
