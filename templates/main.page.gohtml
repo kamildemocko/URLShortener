@@ -1,0 +1,99 @@
+{{template "base" .}}
+
+{{define "content"}}
+
+    <div class="container mt-auto">
+        <form action="#">
+            <div class="row">
+                <div class="col text-end fs-5">
+                    <p>Shorten a <em>long</em> URL to <strong>{{.Protocol}}://{{.Domain}}</strong>/short/</p>
+                </div>
+            </div>
+            <div class="row mb-2 d-flex justify-content-end">
+                <div class="col-5">
+                    <input class="form-control form-control-lg" type="text" placeholder="This-link-rocks" pattern="^\S+$" minlength="2" maxlength="16" id="key">
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col">
+                    <input class="form-control form-control-lg" type="text" placeholder="https://" minlength="10" maxlength="2048" pattern="^http.*" aria-label="URL" id="url">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-end">
+                    <button type="submit" class="btn btn-primary btn-lg mb-3">Get short link</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{{end}}
+
+{{define "js"}}
+
+    <script>
+    const form = document.querySelector("form");
+    const key = document.querySelector("#key");
+    const url = document.querySelector("#url");
+    const modalErrorText = document.querySelector("#modalerror-text");
+    const modalSuccessText = document.querySelector("#modalsuccess-text");
+    let copyToClipboardValue = "";
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        if (!key.checkValidity()) {
+            key.reportValidity();
+            return;
+        }
+
+        if (!url.checkValidity()) {
+            url.reportValidity();
+            return;
+        }
+
+        const key_now = form.elements["key"].value;
+        const url_now = form.elements["url"].value;
+
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+    
+        const payload = {
+            key: key_now,
+            url: url_now
+        }
+
+        const body = {
+            method: "PUT",
+            body: JSON.stringify(payload),
+            headers: headers,
+        }
+
+        fetch("http://localhost/short/set", body)
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.code === 200) {
+                modalSuccessText.textContent = data.detail
+                copyToClipboardValue = data.detail
+                $('#modalSuccess').modal('show');
+                form.reset()
+            } else {
+                modalErrorText.textContent = data.detail
+                $('#modalError').modal('show');
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            alert("something went wrong")
+        });
+    });
+
+    function copyToClipboard() {
+        navigator.clipboard.writeText(copyToClipboardValue);
+    }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+{{end}}

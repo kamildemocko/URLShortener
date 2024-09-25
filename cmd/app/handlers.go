@@ -3,13 +3,20 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/go-chi/chi/v5"
 )
+
+type PageData struct {
+	Protocol string
+	Domain   string
+}
 
 func (app *Config) handleRedirectWithKey(w http.ResponseWriter, r *http.Request) {
 	key := chi.URLParam(r, "key")
@@ -62,5 +69,34 @@ func (app *Config) handleSetShortKey(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.WriteJSON(w, http.StatusOK, "success", "data inserted", nil)
+	newUrl := fmt.Sprintf("%s://%s/short/%s", os.Getenv("PROTOCOL"), os.Getenv("DOMAIN"), inputRequest.Key)
+	app.WriteJSON(w, http.StatusOK, "success", newUrl, nil)
+}
+
+func (app *Config) handleMainPage(w http.ResponseWriter, r *http.Request) {
+	render(w, "main.page.gohtml", PageData{Protocol: os.Getenv("PROTOCOL"), Domain: os.Getenv("DOMAIN")})
+}
+
+func render(w http.ResponseWriter, t string, data PageData) {
+	partials := []string{
+		"./templates/base.layout.gohtml",
+		"./templates/header.partial.gohtml",
+		"./templates/footer.partial.gohtml",
+		"./templates/modalerror.partial.gohtml",
+		"./templates/modalsuccess.partial.gohtml",
+	}
+
+	var templateSlice []string
+	templateSlice = append(templateSlice, fmt.Sprintf("./templates/%s", t))
+	templateSlice = append(templateSlice, partials...)
+
+	tmpl, err := template.ParseFiles(templateSlice...)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if err := tmpl.Execute(w, data); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }

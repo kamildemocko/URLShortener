@@ -1,0 +1,30 @@
+{{define "base" }}
+    <!doctype html>
+    <html lang="en">
+
+    {{template "header" .}}
+
+    <body>
+
+    <div class="d-flex flex-column vh-100">
+
+        {{block "content" .}}
+
+        {{end}}
+
+        {{template "modalsuccess" .}}
+
+        {{template "modalerror" .}}
+
+        {{block "js" .}}
+
+        {{end}}
+
+        {{template "footer" .}}
+    
+    </div>
+
+    </body>
+    </html>
+
+{{end}}
