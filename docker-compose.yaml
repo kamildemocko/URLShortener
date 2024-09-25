@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  url-shortener:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: url-shortener
+    ports:
+      - "80:80"
+    restart: always
