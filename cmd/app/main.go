@@ -12,7 +12,7 @@ import (
 )
 
 type Config struct {
-	webPort    int
+	webPort    string
 	pathPrefix string
 	dsn        string
 	repository data.Repository
@@ -26,7 +26,7 @@ func init() {
 
 func main() {
 	app := Config{
-		webPort:    80,
+		webPort:    os.Getenv("PORT"),
 		pathPrefix: "/short",
 		dsn:        os.Getenv("DSN"),
 	}
@@ -38,14 +38,14 @@ func main() {
 	app.repository = repo
 
 	srv := http.Server{
-		Addr:         fmt.Sprintf(":%d", app.webPort),
+		Addr:         fmt.Sprintf(":%s", app.webPort),
 		Handler:      app.routes(),
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  30 * time.Second,
 	}
 
-	fmt.Printf("Starting server on port %d\n", app.webPort)
+	fmt.Printf("Starting server on port %s\n", app.webPort)
 	if err := srv.ListenAndServe(); err != nil {
 		log.Fatalf("could not start server: %v\n", err)
 	}
