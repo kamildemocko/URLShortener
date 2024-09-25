@@ -2,7 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"net"
 	"net/http"
+	"strings"
 )
 
 type jsonResponse struct {
@@ -46,4 +48,25 @@ func (app *Config) NotFoundJSON(w http.ResponseWriter, err error) error {
 	statusCode := http.StatusNotFound
 
 	return app.WriteJSON(w, statusCode, "error", err.Error(), nil)
+}
+
+func (app *Config) AlreadyExistsJSON(w http.ResponseWriter, err error) error {
+	statusCode := http.StatusConflict
+
+	return app.WriteJSON(w, statusCode, "error", err.Error(), nil)
+}
+
+func (app *Config) GetIP(r *http.Request) string {
+	ip := r.Header.Get("X-Forwarded-For")
+	if ip == "" {
+		ip = r.Header.Get("X-Real-IP")
+	}
+
+	if ip == "" {
+		ip = r.RemoteAddr
+		if strings.Contains(ip, ":") {
+			ip, _, _ = net.SplitHostPort(ip)
+		}
+	}
+	return ip
 }

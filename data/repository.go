@@ -1,11 +1,14 @@
 package data
 
-import "database/sql"
+import (
+	"database/sql"
+	"time"
+)
 
 type Repository interface {
 	CreateTable() error
-	GetUrlByKey(string) (string, error)
-	// SetKey(string, string, string) error
+	GetUrlByKey(key string) (string, error)
+	SetKey(date time.Time, ip string, url string, key string) error
 }
 
 type postgresRepository struct {

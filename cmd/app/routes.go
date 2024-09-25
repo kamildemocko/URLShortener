@@ -14,7 +14,7 @@ func (app *Config) routes() http.Handler {
 
 	mux.Use(cors.Handler(cors.Options{
 		AllowedOrigins: []string{"http://*", "https://*"},
-		AllowedMethods: []string{"GET"},
+		AllowedMethods: []string{"GET", "PUT"},
 		AllowedHeaders: []string{"Accept", "Content-Type", "X-CSRD-Token"},
 		ExposedHeaders: []string{"Link"},
 		MaxAge:         300,
@@ -25,8 +25,8 @@ func (app *Config) routes() http.Handler {
 	mux.Use(middleware.DefaultLogger)
 
 	mux.Route(app.pathPrefix, func(mux chi.Router) {
-		mux.HandleFunc("/go/{key}", app.handleRedirectWithKey)
-		mux.HandleFunc("/set", app.handleSetShortKey)
+		mux.HandleFunc("GET /go/{key}", app.handleRedirectWithKey)
+		mux.HandleFunc("PUT /set", app.handleSetShortKey)
 	})
 
 	return mux

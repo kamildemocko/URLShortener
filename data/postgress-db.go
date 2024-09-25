@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -85,4 +86,19 @@ func (pr *postgresRepository) GetUrlByKey(key string) (string, error) {
 	return data.url, nil
 }
 
-// func (pr *postgresRepository) SetKey(string, string, string) error {}
+func (pr *postgresRepository) SetKey(date time.Time, ip string, url string, key string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	query := `
+		INSERT INTO urlshortener.keys (timestamp, ip, url, key) 
+		VALUES ($1, $2, $3, $4);`
+
+	_, err := pr.DB.ExecContext(ctx, query, date, ip, url, key)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	return nil
+}
