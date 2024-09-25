@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "URLShortener",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
