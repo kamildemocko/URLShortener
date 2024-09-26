@@ -24,8 +24,6 @@ func (app *Config) routes() http.Handler {
 	mux.Use(middleware.Recoverer)
 	mux.Use(middleware.DefaultLogger)
 
-	mux.Handle("/favicon.ico", http.FileServer(http.Dir("./")))
-
 	mux.Route(app.pathPrefix, func(mux chi.Router) {
 		mux.HandleFunc("GET /{key}", app.handleRedirectWithKey)
 		mux.HandleFunc("PUT /set", app.handleSetShortKey)
