@@ -8,6 +8,8 @@ import (
 
 const allowedUrlCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;="
 
+var forbiddenKeys = []string{"notfound"}
+
 func (app *Config) ValidateUrl(url string) error {
 	if !strings.HasPrefix(url, "http") {
 		return fmt.Errorf("url has to start with http or https at the beginning")
@@ -31,12 +33,19 @@ func (app *Config) ValidateUrl(url string) error {
 }
 
 func (app *Config) ValidateKey(key string) error {
+
 	if len(key) < 2 || len(key) > 32 {
 		return fmt.Errorf("key has to be between 2 - 32 characters")
 	}
 
-	if !strings.ContainsAny(key, (allowedUrlCharacters)) {
+	if !strings.ContainsAny(key, allowedUrlCharacters) {
 		return fmt.Errorf("key contains unsupported character(s)")
+	}
+
+	for _, k := range forbiddenKeys {
+		if strings.Contains(key, k) {
+			return fmt.Errorf("key contains forbidden word")
+		}
 	}
 
 	return nil

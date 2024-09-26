@@ -23,7 +23,7 @@ func (app *Config) handleRedirectWithKey(w http.ResponseWriter, r *http.Request)
 
 	url, err := app.repository.GetUrlByKey(key)
 	if err != nil {
-		_ = app.NotFoundJSON(w, fmt.Errorf("cannot find url by key: %s", key))
+		http.Redirect(w, r, "/short/notfound", http.StatusSeeOther)
 		return
 	}
 
@@ -78,6 +78,10 @@ func (app *Config) handleSetShortKey(w http.ResponseWriter, r *http.Request) {
 
 func (app *Config) handleMainPage(w http.ResponseWriter, r *http.Request) {
 	render(w, "main.page.gohtml", PageData{Protocol: os.Getenv("PROTOCOL"), Domain: os.Getenv("DOMAIN")})
+}
+
+func (app *Config) handleNotFoundPage(w http.ResponseWriter, r *http.Request) {
+	render(w, "notfound.page.gohtml", PageData{Protocol: os.Getenv("PROTOCOL"), Domain: os.Getenv("DOMAIN")})
 }
 
 func render(w http.ResponseWriter, t string, data PageData) {

@@ -28,6 +28,7 @@ func (app *Config) routes() http.Handler {
 		mux.HandleFunc("GET /{key}", app.handleRedirectWithKey)
 		mux.HandleFunc("PUT /set", app.handleSetShortKey)
 		mux.HandleFunc("GET /", app.handleMainPage)
+		mux.HandleFunc("GET /notfound", app.handleNotFoundPage)
 	})
 
 	return mux
