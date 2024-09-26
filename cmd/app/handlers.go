@@ -55,6 +55,9 @@ func (app *Config) handleSetShortKey(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ip := app.GetIP(r)
+	if len(ip) > 32 {
+		ip = ip[:32]
+	}
 
 	err = app.repository.SetKey(time.Now(), ip, inputRequest.URL, inputRequest.Key)
 	if err != nil {

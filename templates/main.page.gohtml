@@ -11,10 +11,10 @@
             </div>
             <div class="row mb-2 d-flex justify-content-end">
                 <div class="col-5">
-                    <input class="form-control form-control-lg" type="text" placeholder="This-link-rocks" pattern="^\S+$" minlength="2" maxlength="16" id="key">
+                    <input class="form-control form-control-lg" type="text" placeholder="This-rocks" pattern="^\S+$" minlength="2" maxlength="16" id="key">
                 </div>
             </div>
-            <div class="row mb-2">
+            <div class="row mb-3">
                 <div class="col">
                     <input class="form-control form-control-lg" type="text" placeholder="https://" minlength="10" maxlength="2048" pattern="^http.*" aria-label="URL" id="url">
                 </div>
@@ -69,7 +69,7 @@
             headers: headers,
         }
 
-        fetch("http://localhost/short/set", body)
+        fetch("/short/set", body)
         .then((response) => response.json())
         .then((data) => {
             if (data.code === 200) {

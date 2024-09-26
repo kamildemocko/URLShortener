@@ -6,6 +6,12 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: url-shortener
+    networks:
+      - url-shortener-net
     ports:
-      - "80:80"
+      - "8089:80"
     restart: always
+
+networks:
+  url-shortener-net:
+    external: true

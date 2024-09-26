@@ -21,7 +21,7 @@ func (pr *postgresRepository) CreateTable() error {
 		CREATE TABLE IF NOT EXISTS urlshortener.keys (
 		id SERIAL PRIMARY KEY,
 		timestamp TIMESTAMP WITH TIME ZONE,
-		ip VARCHAR(16),
+		ip VARCHAR(32),
 		url VARCHAR(2048),
 		key VARCHAR(32),
 		CONSTRAINT unique_key UNIQUE (key)
