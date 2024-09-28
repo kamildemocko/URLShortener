@@ -55,6 +55,14 @@
 
         const key_now = form.elements["key"].value;
         const url_now = form.elements["url"].value;
+        console.log(key_now, url_now)
+
+        if (key_now === "" || url_now === "") {
+            console.log("here")
+            modalErrorText.textContent = "Please fill Key and URL first";
+            $('#modalError').modal('show');
+            return
+        }
 
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
