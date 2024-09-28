@@ -80,14 +80,18 @@ func (app *Config) handleSetShortKey(w http.ResponseWriter, r *http.Request) {
 func (app *Config) handleMainPage(w http.ResponseWriter, r *http.Request) {
 	savedCount, err := app.repository.GetSavedCount()
 	if err != nil {
-		panic("error getting count")
+		http.Redirect(w, r, "/short/internalerror", http.StatusSeeOther)
 	}
-	fmt.Println(savedCount)
+
 	render(w, "main.page.gohtml", PageData{Protocol: os.Getenv("PROTOCOL"), Domain: os.Getenv("DOMAIN"), SavedCount: savedCount})
 }
 
 func (app *Config) handleNotFoundPage(w http.ResponseWriter, r *http.Request) {
 	render(w, "notfound.page.gohtml", PageData{Protocol: os.Getenv("PROTOCOL"), Domain: os.Getenv("DOMAIN")})
+}
+
+func (app *Config) handleInternalErrorPage(w http.ResponseWriter, r *http.Request) {
+	render(w, "internalerror.page.gohtml", PageData{Protocol: os.Getenv("PROTOCOL"), Domain: os.Getenv("DOMAIN")})
 }
 
 func render(w http.ResponseWriter, t string, data PageData) {
