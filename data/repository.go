@@ -9,6 +9,7 @@ type Repository interface {
 	CreateTable() error
 	GetUrlByKey(key string) (string, error)
 	SetKey(date time.Time, ip string, url string, key string) error
+	GetSavedCount() (int, error)
 }
 
 type postgresRepository struct {

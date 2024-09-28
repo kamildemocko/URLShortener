@@ -102,3 +102,20 @@ func (pr *postgresRepository) SetKey(date time.Time, ip string, url string, key 
 
 	return nil
 }
+
+func (pr *postgresRepository) GetSavedCount() (int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	query := `
+		SELECT COUNT(*) FROM urlshortener.keys;`
+
+	row := pr.DB.QueryRowContext(ctx, query)
+
+	var count int
+	if err := row.Scan(&count); err != nil {
+		return -1, err
+	}
+
+	return count, nil
+}

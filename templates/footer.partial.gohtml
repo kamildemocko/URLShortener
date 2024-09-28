@@ -4,6 +4,9 @@
             <div class="col text-center">
                 <hr>
                 <small class="text-muted">Copyright &copy;<a href="https://github.com/kamildemocko">Democko Kamil</a></small>
+                {{if .SavedCount}}
+                    --- <small class="text-muted">There are currently {{.SavedCount}} links saved</small>
+                {{end}}
             </div>
         </div>
     </div>

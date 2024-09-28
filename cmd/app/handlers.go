@@ -14,8 +14,9 @@ import (
 )
 
 type PageData struct {
-	Protocol string
-	Domain   string
+	Protocol   string
+	Domain     string
+	SavedCount int
 }
 
 func (app *Config) handleRedirectWithKey(w http.ResponseWriter, r *http.Request) {
@@ -77,7 +78,12 @@ func (app *Config) handleSetShortKey(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Config) handleMainPage(w http.ResponseWriter, r *http.Request) {
-	render(w, "main.page.gohtml", PageData{Protocol: os.Getenv("PROTOCOL"), Domain: os.Getenv("DOMAIN")})
+	savedCount, err := app.repository.GetSavedCount()
+	if err != nil {
+		panic("error getting count")
+	}
+	fmt.Println(savedCount)
+	render(w, "main.page.gohtml", PageData{Protocol: os.Getenv("PROTOCOL"), Domain: os.Getenv("DOMAIN"), SavedCount: savedCount})
 }
 
 func (app *Config) handleNotFoundPage(w http.ResponseWriter, r *http.Request) {

@@ -4,13 +4,11 @@
 
     <div class="container mt-auto">
         <form action="#">
-            <div class="row">
-                <div class="col text-end fs-5">
-                    <p>Shorten a <em>long</em> URL to <strong>{{.Protocol}}://{{.Domain}}</strong>/short/</p>
-                </div>
-            </div>
             <div class="row mb-2 d-flex justify-content-end">
-                <div class="col-5">
+                <div class="col text-end fs-4 mt-auto mb-auto">
+                    <p><small>Shorten a <em>long</em> URL to </small><strong>{{.Protocol}}://{{.Domain}}</strong>/short/</p>
+                </div>
+                <div class="col-5 mt-auto">
                     <input class="form-control form-control-lg" type="text" placeholder="This-rocks" pattern="^\S+$" minlength="2" maxlength="16" id="key">
                 </div>
             </div>
@@ -30,6 +28,9 @@
 {{end}}
 
 {{define "js"}}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
     const form = document.querySelector("form");
@@ -73,12 +74,11 @@
         .then((response) => response.json())
         .then((data) => {
             if (data.code === 200) {
-                modalSuccessText.textContent = data.detail
-                copyToClipboardValue = data.detail
+                modalSuccessText.textContent = data.detail;
+                copyToClipboardValue = data.detail;
                 $('#modalSuccess').modal('show');
-                form.reset()
             } else {
-                modalErrorText.textContent = data.detail
+                modalErrorText.textContent = data.detail;
                 $('#modalError').modal('show');
             }
         })
@@ -91,9 +91,14 @@
     function copyToClipboard() {
         navigator.clipboard.writeText(copyToClipboardValue);
     }
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    $(document).ready(function() {
+        $('#modalSuccess').on("hidden.bs.modal", function() {
+            form.reset()
+            location.reload();
+        });
+    });
+
+    </script>
 
 {{end}}
