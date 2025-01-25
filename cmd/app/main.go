@@ -27,7 +27,7 @@ func init() {
 func main() {
 	app := Config{
 		webPort:    os.Getenv("PORT"),
-		pathPrefix: "/short",
+		pathPrefix: "/",
 		dsn:        os.Getenv("DSN"),
 	}
 

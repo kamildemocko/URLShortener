@@ -10,7 +10,8 @@ services:
       - url-shortener-net
     ports:
       - "8089:80"
-    restart: always
+    restart: unless-stopped
+
 
 networks:
   url-shortener-net:
