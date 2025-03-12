@@ -25,11 +25,11 @@ func (app *Config) routes() http.Handler {
 	mux.Use(middleware.DefaultLogger)
 
 	mux.Route(app.pathPrefix, func(mux chi.Router) {
-		mux.HandleFunc("GET /{key}", app.handleRedirectWithKey)
-		mux.HandleFunc("PUT /set", app.handleSetShortKey)
-		mux.HandleFunc("GET /", app.handleMainPage)
-		mux.HandleFunc("GET /notfound", app.handleNotFoundPage)
-		mux.HandleFunc("GET /internalerror", app.handleInternalErrorPage)
+		mux.Get("/", app.handleMainPage)
+		mux.Get("/{key}", app.handleRedirectWithKey)
+		mux.Put("/set", app.handleSetShortKey)
+		mux.Get("/notfound", app.handleNotFoundPage)
+		mux.Get("/internalerror", app.handleInternalErrorPage)
 	})
 
 	return mux

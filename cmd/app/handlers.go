@@ -24,7 +24,7 @@ func (app *Config) handleRedirectWithKey(w http.ResponseWriter, r *http.Request)
 
 	url, err := app.repository.GetUrlByKey(key)
 	if err != nil {
-		http.Redirect(w, r, "/short/notfound", http.StatusSeeOther)
+		http.Redirect(w, r, "/notfound", http.StatusSeeOther)
 		return
 	}
 
@@ -73,14 +73,14 @@ func (app *Config) handleSetShortKey(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	newUrl := fmt.Sprintf("%s://%s/short/%s", os.Getenv("PROTOCOL"), os.Getenv("DOMAIN"), inputRequest.Key)
+	newUrl := fmt.Sprintf("%s://%s/%s", os.Getenv("PROTOCOL"), os.Getenv("DOMAIN"), inputRequest.Key)
 	app.WriteJSON(w, http.StatusOK, "success", newUrl, nil)
 }
 
 func (app *Config) handleMainPage(w http.ResponseWriter, r *http.Request) {
 	savedCount, err := app.repository.GetSavedCount()
 	if err != nil {
-		http.Redirect(w, r, "/short/internalerror", http.StatusSeeOther)
+		http.Redirect(w, r, "/internalerror", http.StatusSeeOther)
 	}
 
 	render(w, "main.page.gohtml", PageData{Protocol: os.Getenv("PROTOCOL"), Domain: os.Getenv("DOMAIN"), SavedCount: savedCount})
