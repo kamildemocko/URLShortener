@@ -146,3 +146,23 @@ func (pr *postgresRepository) GetSavedCount() (int, error) {
 
 	return count, nil
 }
+
+func (pr *postgresRepository) KeyExists(key string) (bool, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	query := `
+		SELECT COUNT(*) FROM urlshortener.keys WHERE "key" = $1;`
+
+	row := pr.DB.QueryRowContext(ctx, query, key)
+
+	var count int
+	if err := row.Scan(&count); err != nil {
+		return false, err
+	}
+
+	if count == 0 {
+		return false, nil
+	}
+	return true, nil
+}

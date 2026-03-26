@@ -11,6 +11,7 @@ type Repository interface {
 	CreateTable() error
 	GetUrlByKey(key string) (string, error)
 	SetKey(date time.Time, ip string, url string, key string) error
+	KeyExists(key string) (bool, error)
 	GetSavedCount() (int, error)
 }
 

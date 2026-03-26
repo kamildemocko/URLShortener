@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"log"
+	"math/rand/v2"
 	"net/http"
 	"os"
 	"strings"
@@ -17,6 +18,20 @@ func (u *URLHandler) HandleSetShortKey(w http.ResponseWriter, r *http.Request) {
 	if err := validators.ValidateUrl(inputUrl); err != nil {
 		u.HandleErrorPage(w, r, err.Error())
 		return
+	}
+
+	if desiredKey == "" {
+		for desiredKey == "" {
+			randKey := generateRandomKey(8)
+			exists, err := u.Config.Repository.KeyExists(randKey)
+			if err != nil {
+				u.HandleErrorPage(w, r, err.Error())
+				return
+			}
+			if !exists {
+				desiredKey = randKey
+			}
+		}
 	}
 
 	if err := validators.ValidateKey(desiredKey); err != nil {
@@ -44,4 +59,14 @@ func (u *URLHandler) HandleSetShortKey(w http.ResponseWriter, r *http.Request) {
 
 	newUrl := fmt.Sprintf("%s://%s/%s", os.Getenv("PROTOCOL"), os.Getenv("DOMAIN"), desiredKey)
 	u.HandleSuccessPage(w, r, newUrl)
+}
+
+func generateRandomKey(l int) string {
+	runes := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#^*")
+	buffer := make([]rune, l)
+	for i := 0; i < l; i++ {
+		buffer[i] = runes[rand.IntN(len(runes))]
+	}
+
+	return string(buffer)
 }

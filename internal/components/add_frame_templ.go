@@ -41,7 +41,7 @@ func AddFrame(title string, savedCount int) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form method=\"POST\" action=\"/set\"><input class=\"input-wrap\" type=\"text\" placeholder=\"your url\" name=\"input-url\" maxlength=\"2048\" onfocusout=\"this.scrollLeft = 0\" required><br><input class=\"input-wrap\" type=\"text\" placeholder=\"custom key\" name=\"desired-key\" maxlength=\"32\" onfocusout=\"this.scrollLeft = 0\" required><br><input type=\"submit\" value=\"Shorten\"></form>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form method=\"POST\" action=\"/set\"><input class=\"input-wrap\" type=\"text\" placeholder=\"your url\" name=\"input-url\" maxlength=\"2048\" onfocusout=\"this.scrollLeft = 0\" required><br><input class=\"input-wrap\" type=\"text\" placeholder=\"custom key (optional)\" name=\"desired-key\" maxlength=\"32\" onfocusout=\"this.scrollLeft = 0\"><br><input type=\"submit\" value=\"Shorten\"></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
