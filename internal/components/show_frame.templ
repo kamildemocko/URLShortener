@@ -1,0 +1,14 @@
+package components
+
+templ ShowFrame(url string) {
+    @Base("Your Link", 0) {
+        <a href={ url }>{ url }</a>
+        <button 
+            class="top-gap-sml" 
+            data-url={ url }
+            onclick="navigator.clipboard.writeText(this.dataset.url)">
+            Copy Link
+        </button>
+        <a href="/" class="top-gap-sml">Back home</a>
+    }
+}

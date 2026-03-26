@@ -1,0 +1,29 @@
+package components
+
+templ AddFrame(title string, savedCount int) {
+    @Base(title, savedCount) {
+        <form method="POST" action="/set">
+            <input 
+                class="input-wrap" 
+                type="text" 
+                placeholder="your url" 
+                name="input-url" 
+                maxlength="2048" 
+                onfocusout="this.scrollLeft = 0" 
+                required
+            />
+            <br>
+            <input 
+                class="input-wrap" 
+                type="text" 
+                placeholder="custom key" 
+                name="desired-key" 
+                maxlength="32" 
+                onfocusout="this.scrollLeft = 0" 
+                required
+            />
+            <br>
+            <input type="submit" value="Shorten" />
+        </form>
+    }
+}

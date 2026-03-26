@@ -1,0 +1,52 @@
+package validators
+
+import (
+	"fmt"
+	"net/http"
+	"strings"
+)
+
+const allowedUrlCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;="
+
+var forbiddenKeys = []string{"notfound"}
+
+func ValidateUrl(url string) error {
+	if !strings.HasPrefix(url, "http") {
+		return fmt.Errorf("Url has to start with http or https at the beginning")
+	}
+
+	if len(url) > 2048 {
+		return fmt.Errorf("Url is too long")
+	}
+
+	if !strings.ContainsAny(url, (allowedUrlCharacters)) {
+		return fmt.Errorf("Key contains unsupported character(s)")
+	}
+
+	// test url if it works -- for redirect to work it has to start with http*
+	_, err := http.Get(url)
+	if err != nil {
+		return fmt.Errorf("Input URL doesn't seem to work")
+	}
+
+	return nil
+}
+
+func ValidateKey(key string) error {
+
+	if len(key) < 2 || len(key) > 32 {
+		return fmt.Errorf("Key has to be between 2 - 32 characters")
+	}
+
+	if !strings.ContainsAny(key, allowedUrlCharacters) {
+		return fmt.Errorf("Key contains unsupported character(s)")
+	}
+
+	for _, k := range forbiddenKeys {
+		if strings.Contains(key, k) {
+			return fmt.Errorf("Key contains forbidden word")
+		}
+	}
+
+	return nil
+}

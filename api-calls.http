@@ -1,0 +1,43 @@
+# REST Client Extension
+
+# Succesful call
+GET http://localhost:8080/asmr
+
+### 
+
+# Failiure call
+GET http://localhost:8080/hov
+
+###
+
+# SetKeyError
+PUT http://localhost:8080/set
+
+{
+    "url": "https://www.notexistingatallyeah.sk",
+    "key": "test3"
+}
+
+###
+
+# SetKeyErrorHttpUpFront
+PUT http://localhost:8080/set
+
+{
+    "url": "www.dsl.sk",
+    "key": "test2"
+}
+
+###
+
+PUT http://localhost:8080/set?input-url=https%3A%2F%2Fwww.kaloricketabulky.sk%2Fuser%2Fdiary&desired-key=test
+
+###
+
+# SetKeyErrorHttpUpOk
+PUT http://localhost:8080/set
+
+{
+    "url": "https://www.dsl.sk",
+    "key": "test1"
+}

@@ -1,0 +1,18 @@
+package components
+
+templ Base(title string, savedCount int) {
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8"> 
+            <meta name="viewport" content="width=device-width, inital-scale=1.0"> 
+            <title>{title}</title>
+            @Css()
+        </head>
+        <body>
+            <h1>{title}</h1>
+            { children... }
+            @Footer(savedCount)
+        </body>
+    </html>
+}

@@ -1,0 +1,14 @@
+package components
+
+import "fmt"
+
+templ Footer(savedCount int) {
+    <div class="cent top-gap-mdm">
+        <br />
+        if savedCount > 0 {
+            <small><strong>{ fmt.Sprintf("%d", savedCount) }</strong> links saved atm</small>
+        }
+        <br />
+        <small>Copyright &copy;<a href="https://github.com/kamildemocko">Democko Kamil</a></small>
+    </div>
+}
