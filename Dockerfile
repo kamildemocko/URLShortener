@@ -8,7 +8,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 go build -o app ./cmd/app
+RUN CGO_ENABLED=0 go build -o app ./cmd/urlshortener
 
 RUN chmod +x app
 
@@ -17,8 +17,6 @@ FROM alpine:latest
 WORKDIR /app
 
 COPY .env .
-
-COPY ./templates /app/templates
 
 COPY --from=builder /app/app .
 
