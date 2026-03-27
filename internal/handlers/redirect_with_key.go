@@ -11,7 +11,7 @@ func (u *URLHandler) HandleRedirectWithKey(w http.ResponseWriter, r *http.Reques
 
 	url, err := u.Config.Repository.GetUrlByKey(key)
 	if err != nil {
-		http.Redirect(w, r, "/notfound", http.StatusSeeOther)
+		u.HandleNotFoundPage(w, r)
 		return
 	}
 
