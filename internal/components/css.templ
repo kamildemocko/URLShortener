@@ -6,11 +6,16 @@ templ Css() {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
+            align-items: stretch;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
+        }
+        .page-shell {
+            width: min(90%, 28rem);
+            margin-inline: auto;
+            text-align: center;
         }
         form {
             display: flex;
@@ -21,7 +26,7 @@ templ Css() {
         .input-wrap {
             text-overflow: ellipsis;
             overflow: hidden;
-            width: 18;
+            width: 100%;
         }
         input {
             padding: 8px;
